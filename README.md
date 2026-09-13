@@ -156,7 +156,12 @@ Eyes are ordered by image-space x coordinate: the smaller x coordinate is labele
 
 The current result is reported in pixels. Conversion to a physical unit such as millimeters requires camera calibration or a known reference scale.
 
-## 7. Validation
+### Measurement Validation
+For validation, ground-truth eye positions can be manually annotated using LabelMe. The resulting JSON annotation files provide the annotated coordinates, which are used to calculate the reference eye-to-eye distance using the same Euclidean distance formula above.
+
+The reference distance is then compared with the distance measured by the pipeline to verify the measurement result.
+
+## 7. Segmentation Model Validation
 
 For segmentation masks with ground-truth annotations:
 
