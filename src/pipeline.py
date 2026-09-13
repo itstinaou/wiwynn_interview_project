@@ -231,6 +231,39 @@ def run_image(path, animal_classes):
     cv2.imwrite(str(VIS_DIR / f"{Path(path).stem}.jpg"), draw_result(image, animals))
     return rows
 
+def run_csv(csv_path):
+    test_data = pd.read_csv(csv_path)
+    required = {"image", "animals"}
+    missing = required - set(test_data.columns)
+    if missing:
+        raise ValueError(f"CSV is missing required columns: {sorted(missing)}")
+
+    all_rows = []
+    for _, row in test_data.iterrows():
+        image_name = str(row["image"]).strip()
+        animal_classes = [x.strip().lower() for x in str(row["animals"]).split(";") if x.strip()]
+
+        invalid = [x for x in animal_classes if x not in ANIMAL_LABELS]
+        if invalid:
+            raise ValueError(
+                f"Unsupported animal class(es) in {image_name}: {invalid}. "
+                f"Supported classes: {ANIMAL_LABELS}"
+            )
+
+        path = IMAGE_DIR / image_name
+        if not path.exists():
+            print(f"Failed: {image_name}: file not found in {IMAGE_DIR}")
+            continue
+
+        print(f"Processing {image_name} | animals: {animal_classes}")
+        try:
+            all_rows.extend(run_image(path, animal_classes))
+        except Exception as e:
+            print(f"Failed: {image_name}: {e}")
+
+    pd.DataFrame(all_rows).to_csv(OUTPUT_DIR / "results.csv", index=False)
+
+
 def run_all(animal_classes):
     paths = sorted(IMAGE_DIR.glob("*.jpg"))
     all_rows = []
@@ -242,8 +275,23 @@ def run_all(animal_classes):
             print(f"Failed: {path.name}: {e}")
     pd.DataFrame(all_rows).to_csv(OUTPUT_DIR / "results.csv", index=False)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--animals", nargs="+", default=["cat"], choices=ANIMAL_LABELS)
+    parser.add_argument(
+        "--input",
+        default="data/test_data.csv",
+        help="CSV test manifest with columns: image, animals"
+    )
+    parser.add_argument(
+        "--animals",
+        nargs="+",
+        choices=ANIMAL_LABELS,
+        help="Optional direct mode: process all images with these animal classes"
+    )
     args = parser.parse_args()
-    run_all(args.animals)
+
+    if args.animals:
+        run_all(args.animals)
+    else:
+        run_csv(ROOT / args.input)

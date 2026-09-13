@@ -12,7 +12,7 @@ For an image containing at least two animals, the system:
 4. Segments each eye individually.
 5. Uses the centroid of each eye mask as the measurement point.
 6. Measures the distance between the two eyes of each animal.
-7. Measures the distance between the right eyes of two animals.
+7. Measures the distance between the righeyet eyes of two animals.
 
 The demo case uses two cats with clearly visible eyes. The pipeline supports multiple animal classes through the `--animals` command-line argument.
 
@@ -43,6 +43,7 @@ Grounding DINO is used to obtain object bounding boxes. SAM 2.1 converts the box
 │   └── evaluate_segmentation.py
 ├── data/
 │   ├── images/
+│   ├── test_data.csv
 │   ├── sample_measurements.csv
 │   └── eye_reference_template.csv
 ├── docs/
@@ -73,7 +74,29 @@ cp .env.example .env
 
 Put input images under `data/images/`.
 
-A representative two-cat image can be used for the demo. The first inference run downloads the Grounding DINO and SAM 2.1 model weights from Hugging Face.
+The recommended input method is `data/test_data.csv`. Each row specifies an image filename and the animal class(es) to process. Multiple rows are supported, and multiple animal classes in one row are separated by `;`.
+
+Example:
+
+```csv
+image,animals
+000000402473.jpg,cat
+000000402473.jpg,"cat;dog"
+```
+
+Run the test manifest:
+
+```bash
+python -m src.pipeline
+```
+
+You can also provide a different CSV:
+
+```bash
+python -m src.pipeline --input data/test_data.csv
+```
+
+For quick direct testing, the original command-line mode is also supported:
 
 ### Run with one animal class
 
@@ -110,7 +133,9 @@ After running the pipeline:
 - `right_eye_pair_animal_1`, `right_eye_pair_animal_2`: animal IDs used for the cross-animal measurement
 - `right_eye_pair_distance_px`: Euclidean distance between their right-eye centroids
 
-A representative CSV is included as `data/sample_measurements.csv`.
+`data/test_data.csv` is the test input manifest. It contains the image filename and the animal class(es) to process.
+
+`data/sample_measurements.csv` is retained as an example of measurement output.
 
 ## 6. Measurement Method
 
@@ -214,7 +239,24 @@ docker compose down
 
 The provided Docker configuration runs inference on CPU by default.
 
-## 11. COCO Sample Selection
+## 11. Test Data CSV
+
+The test CSV uses two columns:
+
+- `image`: filename under `data/images/`
+- `animals`: one or more supported animal classes separated by `;`
+
+Example:
+
+```csv
+image,animals
+000000402473.jpg,cat
+000000402473.jpg,"cat;dog"
+```
+
+The pipeline processes every row in the CSV and writes the combined measurements to `outputs/results.csv`.
+
+## 12. COCO Sample Selection
 
 The sample downloader searches COCO validation annotations for images containing at least two selected animal instances:
 
@@ -224,11 +266,11 @@ python scripts/download_coco_samples.py --count 5
 
 Candidate images can be manually reviewed before use as metrology test cases. The demo focuses on showing the complete segmentation-to-measurement workflow rather than covering every possible animal pose or image quality condition.
 
-## 12. System Architecture
+## 13. System Architecture
 
 See `docs/architecture.svg`.
 
-## 13. Notes
+## 14. Notes
 
 Model weights are downloaded from Hugging Face on the first inference run and are not included in this repository.
 

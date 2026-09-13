@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 .venv/
+wiwynn_interview_env/
 venv/
 
 # Environment
