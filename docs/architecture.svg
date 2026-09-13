@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 z"/></marker></defs>
+<rect x="30" y="180" width="150" height="70" rx="10" fill="white" stroke="black"/><text x="105" y="220" text-anchor="middle">COCO images</text>
+<rect x="240" y="90" width="180" height="70" rx="10" fill="white" stroke="black"/><text x="330" y="130" text-anchor="middle">Grounding DINO</text><text x="330" y="148" text-anchor="middle">animal / eye boxes</text>
+<rect x="500" y="90" width="180" height="70" rx="10" fill="white" stroke="black"/><text x="590" y="130" text-anchor="middle">SAM 2.1</text><text x="590" y="148" text-anchor="middle">animal masks</text>
+<rect x="500" y="290" width="180" height="70" rx="10" fill="white" stroke="black"/><text x="590" y="330" text-anchor="middle">SAM 2.1</text><text x="590" y="348" text-anchor="middle">eye masks</text>
+<rect x="760" y="180" width="150" height="70" rx="10" fill="white" stroke="black"/><text x="835" y="212" text-anchor="middle">Mask centroid</text><text x="835" y="230" text-anchor="middle">+ association</text>
+<rect x="950" y="180" width="120" height="70" rx="10" fill="white" stroke="black"/><text x="1010" y="212" text-anchor="middle">Distance</text><text x="1010" y="230" text-anchor="middle">CSV / image</text>
+<path d="M180 215 L240 125" stroke="black" marker-end="url(#a)"/><path d="M420 125 L500 125" stroke="black" marker-end="url(#a)"/><path d="M330 160 L500 325" stroke="black" marker-end="url(#a)"/><path d="M680 125 L760 215" stroke="black" marker-end="url(#a)"/><path d="M680 325 L760 245" stroke="black" marker-end="url(#a)"/><path d="M910 215 L950 215" stroke="black" marker-end="url(#a)"/>
+</svg>

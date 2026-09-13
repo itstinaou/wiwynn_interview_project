@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Environment
+.env
+
+# Model/cache files
+.cache/
+.pytest_cache/
+huggingface/
+models/
+
+# Runtime/API data
+data/api_inputs/
+
+# Generated outputs
+outputs/masks/
+outputs/visualizations/
+outputs/results.csv
+
+# Large COCO downloads
+data/coco/annotations_trainval2017.zip
+
+# macOS
+.DS_Store
+
+*.zip
+.~lock.*
