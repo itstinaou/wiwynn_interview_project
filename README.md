@@ -191,16 +191,10 @@ curl http://localhost:8000/health
 Measurement request:
 
 ```bash
-curl -u demo:demo123 -X POST   -F "file=@data/images/000000402473.jpg"   "http://localhost:8000/measure?animals=cat"
+curl -u demo:demo123 -X POST http://localhost:8000/measure
 ```
 
-Multiple classes can be supplied by repeating the query parameter:
-
-```text
-/measure?animals=cat&animals=dog
-```
-
-The API accepts JPG, JPEG, and PNG files and returns measurement results as JSON.
+The `/measure` endpoint uses `data/test_data.csv` as the test input manifest and returns the measurement results as JSON.
 
 ## 9. Test Account
 
